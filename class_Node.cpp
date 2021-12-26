@@ -2,7 +2,7 @@
 
 class Node{
 	/*
-	Basic struct to represent a piece of a big number, any big number has a group of nodes with numbers until 9 digits. Nodes with less then 9 digits has some zeros, linke "000033" to 33. 
+	Basic class to represent a piece of a big number, any big number has a group of nodes with numbers until 9 digits. Nodes with less then 9 digits has some zeros, linke "000033" to 33. 
 	Moreover, any node has too a reference for the previous node and for the next node, this references can be null if they don't exist.
 	*/
 	private:
