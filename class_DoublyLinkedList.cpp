@@ -4,7 +4,8 @@
 using namespace std;
 
 class DoublyLinkedList{
-	//A doublyLinkedList is a LinkedList with nodes doubly referenceds. This class only has the pointer to the first and last node, with this the DLL has some methods to manipulate the nodes.
+	//A doublyLinkedList is a LinkedList with nodes doubly referenceds. This class only has the pointer to the first and last node, 
+	//with this, the Linked List has some methods to manipulate the nodes.
 	
 	private:
 		Node* head;
