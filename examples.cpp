@@ -16,16 +16,16 @@ int main(){
 	BIG_NUM* big4 = new BIG_NUM("6798236464879");
 	BIG_NUM* res2 = new BIG_NUM();
 	
-	BIG_NUM::product(res2, big3, big4); //9234234123675 * 6798236464879
+	BIG_NUM::product(res2, big3, big4); 
 	
-	res2->show_number();
+	res2->show_number(); //9234234123675 * 6798236464879
 	cout << "\n\n";
 	
 	BIG_NUM* big5 = new BIG_NUM(4096);
 	BIG_NUM* res3 = new BIG_NUM();
 	
-	BIG_NUM::pow(res3, big5, 25); //4096 ^ 25
-	res3->show_number();
+	BIG_NUM::pow(res3, big5, 25); 
+	res3->show_number(); //4096 ^ 25
 	
 	
 	return 0;
