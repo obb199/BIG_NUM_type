@@ -7,7 +7,7 @@ class BIG_NUM{
 	//BIG_NUM is represented by a DoublylinkedList and a set of methods to manipulate the numbers. You can create a big num with other int or use a string.
 	private:
 		DoublyLinkedList* big_num;
-		//bool negative; # FOR OTHER TIME... (SUBTRATION, DIVISION AND MOD TOO..)
+		//bool negative; # FOR OTHER TIME (SUBTRACTION, DIVISION, MOD, NUMBERS COMPARISONS TOO ...)
 	
 	public:
 		//Constructor with no parameters, create a big num with zero value
