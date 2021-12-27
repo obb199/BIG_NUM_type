@@ -59,8 +59,9 @@ class BIG_NUM{
 		
 		//Construtor to create a big num using a unsigned long long number
 		BIG_NUM(unsigned long long number){
+			
 			big_num = new DoublyLinkedList();
-			big_num->add_new_digit(number, 0);
+			big_num->add_new_digit(number, count_of_zeros(number);
 		}
 		
 		//Setters and Getters:
