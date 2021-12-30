@@ -61,7 +61,7 @@ class BIG_NUM{
 		BIG_NUM(unsigned long long number){
 			
 			big_num = new DoublyLinkedList();
-			big_num->add_new_digit(number, count_of_zeros(number);
+			big_num->add_new_digit(number, count_of_zeros(number));
 		}
 		
 		//Setters and Getters:
