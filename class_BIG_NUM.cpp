@@ -30,7 +30,7 @@ class BIG_NUM{
 			
 			int i = 0;
 			int mult_num = 1;
-			unsigned long long num = 0;
+			long long num = 0;
 			int zeros = 0;
 			
 			while (string_number[i] != '\0'){	
@@ -52,13 +52,13 @@ class BIG_NUM{
 				}
 			}
 			
-			if (mult_num > 0){
+			if (num > 0){
 				big_num->add_new_digit(num, zeros);
 			}
 		}		
 		
-		//Construtor to create a big num using a unsigned long long number
-		BIG_NUM(unsigned long long number){
+		//Construtor to create a big num using a long long number
+		BIG_NUM(long long number){
 			
 			big_num = new DoublyLinkedList();
 			big_num->add_new_digit(number, count_of_zeros(number));
@@ -91,7 +91,7 @@ class BIG_NUM{
 		}
 		
 		//Method to discover how much zeros are in some number, any node has maximum of 9 digits, if this number is smaller then that, he gonna has some zeros at the end.
-		static int count_of_zeros(unsigned long long number){
+		static int count_of_zeros(long long number){
 			number = number%1000000000;
 			
 			int i = 0;
@@ -104,7 +104,7 @@ class BIG_NUM{
 		}
 		
 		//transforming a int in a string.
-		static string int_to_string(unsigned long long n){
+		static string int_to_string(long long n){
 		    string v = "";
 			while (n > 0){
 				int d = n%10;
@@ -178,8 +178,8 @@ class BIG_NUM{
 			}		
 			
 			int rest = 0;
-			unsigned long long digits = 0;
-			int count_of_zeros = 0;
+			long long digits = 0;
+			int amount_of_zeros = 0;
 			
 			while(Node_n1 != NULL || Node_n2 != NULL){
 				if (rest == 1){
@@ -195,14 +195,14 @@ class BIG_NUM{
 					digits += Node_n2->get_digits();
 					Node_n2 = Node_n2->get_previous();
 				}	
-				
-				int count_of_zeros = BIG_NUM::count_of_zeros(digits);
 
 				if (digits >= 1000000000){
 					digits = digits%1000000000;
 					rest = 1;
 				}
-				result->add_new_digit(digits, count_of_zeros);
+				
+				amount_of_zeros = BIG_NUM::count_of_zeros(digits);
+				result->add_new_digit(digits, amount_of_zeros);
 				digits = rest;
 			}
 			
@@ -220,13 +220,13 @@ class BIG_NUM{
 			
 		}
 		
-		static void sum(BIG_NUM* result, BIG_NUM* n1, unsigned long long n2){ // n(big_num) = n1(big_num) + n2(unsigned long long);
+		static void sum(BIG_NUM* result, BIG_NUM* n1, long long n2){ // n(big_num) = n1(big_num) + n2(long long);
 			BIG_NUM* bign2 = new BIG_NUM(n2);
 			BIG_NUM::sum(result, n1, bign2);
 			delete bign2;
 		}	
 		
-		static void sum(BIG_NUM* result, unsigned long long n1, unsigned long long n2){ //n(big_num) = n1(unsigned long long) + n2(unsigned long long)
+		static void sum(BIG_NUM* result, long long n1, long long n2){ //n(big_num) = n1(long long) + n2(long long)
 			BIG_NUM* big1 = new BIG_NUM(n1);
 			BIG_NUM* big2 = new BIG_NUM(n2);
 			BIG_NUM::sum(result, big1, big2);
@@ -234,7 +234,7 @@ class BIG_NUM{
 			delete big2;
 		}
 		
-		static void sum(BIG_NUM* n1, unsigned long long n2){ // n1(big_num) = n1(big_num) + unsigned long long
+		static void sum(BIG_NUM* n1, long long n2){ // n1(big_num) = n1(big_num) + long long
 			BIG_NUM* big = new BIG_NUM(n2);
 			BIG_NUM::sum(n1, big);
 			delete big;
@@ -264,7 +264,7 @@ class BIG_NUM{
 				}
 				
 				while(Node_n2 != NULL){
-					unsigned long long prod = Node_n1->get_digits()*Node_n2->get_digits();
+					long long prod = Node_n1->get_digits()*Node_n2->get_digits();
 					string prod_s = BIG_NUM::int_to_string(prod);
 				
 					for(int i = 0; i < zeros_n1 + zeros_n2; i++){
@@ -292,19 +292,19 @@ class BIG_NUM{
 			delete aux;
 		}
 		
-		static void product(BIG_NUM* result, BIG_NUM* n1, unsigned long long n2){ //n(big_num) = n1(big_num) * n2 (unsigned long long)	
+		static void product(BIG_NUM* result, BIG_NUM* n1, long long n2){ //n(big_num) = n1(big_num) * n2 (long long)	
 			BIG_NUM* big_n2 = new BIG_NUM(n2);
 			BIG_NUM::product(result, n1, big_n2);
 			delete big_n2;	
 		}
 		
-		static void product(BIG_NUM* n1, unsigned long long n2){// n1(big_num) = n1(big_num) * n2(unsigned long long		
+		static void product(BIG_NUM* n1, long long n2){// n1(big_num) = n1(big_num) * n2(long long		
 			BIG_NUM* big_n2 = new BIG_NUM(n2);
 			BIG_NUM::product(n1, big_n2);
 			delete big_n2;	
 		}
 		
-		static void pow(BIG_NUM* result, BIG_NUM* n1, unsigned long long n2){// n(big_num) = n1(big_num)^n2(unsigned long long)
+		static void pow(BIG_NUM* result, BIG_NUM* n1, long long n2){// n(big_num) = n1(big_num)^n2(long long)
 			BIG_NUM* res = new BIG_NUM(1);
 				
 			for(int i = 0; i < n2; i++){
@@ -315,12 +315,12 @@ class BIG_NUM{
 			delete res;
 		}
 	
-		static void pow(BIG_NUM* result, unsigned long long n1, unsigned long long n2){// n(big_num) = n1(unsigned long long)^n2(unsigned long long)
+		static void pow(BIG_NUM* result, long long n1, long long n2){// n(big_num) = n1(long long)^n2(long long)
 			BIG_NUM* big1 = new BIG_NUM(n1);
 			BIG_NUM::pow(result, big1, n2);
 		}
 		
-		static void pow(BIG_NUM* n1, unsigned long long n2){// n1(big_num) = n1(big_num)^n2(unsigned long long)
+		static void pow(BIG_NUM* n1, long long n2){// n1(big_num) = n1(big_num)^n2(long long)
 			BIG_NUM* result = new BIG_NUM();
 			BIG_NUM::pow(result, n1, n2);
 			n1->set_DoublyLinkedList(result->get_DoublylinkedList());	
