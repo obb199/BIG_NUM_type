@@ -73,6 +73,23 @@ class BIG_NUM{
 			big_num = l;
 		}
 		
+		int length(){
+			int length = 0;
+			
+			Node* node_aux = big_num->get_head();
+			
+			length += 9 - BIG_NUM::count_of_zeros(big_num->get_head()->get_digits());
+			node_aux = node_aux->get_next();
+			
+			while(node_aux){
+				length += 9;
+				node_aux = node_aux->get_next();
+			}
+			
+			delete node_aux;
+			return length;
+		}
+		
 		//Method to discover how much zeros are in some number, any node has maximum of 9 digits, if this number is smaller then that, he gonna has some zeros at the end.
 		static int count_of_zeros(unsigned long long number){
 			number = number%1000000000;
@@ -195,54 +212,12 @@ class BIG_NUM{
 		}
 	
 		static void sum(BIG_NUM* n1, BIG_NUM* n2){ // n1 = n1(big_num) + n2(big_num);
-			BIG_NUM* result = new BIG_NUM();	
-			DoublyLinkedList * null_list = new DoublyLinkedList();
-			result->set_DoublyLinkedList(null_list);
-			Node* Node_n1 = n1->get_DoublylinkedList()->get_head();
-			Node* Node_n2 = n2->get_DoublylinkedList()->get_head();
-				
-			if (n1->get_DoublylinkedList()->get_tail() != NULL){
-				Node_n1 = n1->get_DoublylinkedList()->get_tail();
-			}
-				
-			if (n2->get_DoublylinkedList()->get_tail() != NULL){
-				Node_n2 = n2->get_DoublylinkedList()->get_tail();
-			}		
-				
-			int rest = 0;
-			unsigned long long digits = 0;
-			int count_of_zeros = 0;
-				
-			while(Node_n1 != NULL || Node_n2 != NULL){
-				if (rest == 1){
-					digits = 1;
-					rest = 0;
-				}
-					
-				if (Node_n1 != NULL){
-					digits += Node_n1->get_digits();
-					Node_n1 = Node_n1->get_previous();
-				}
-				if (Node_n2 != NULL){
-					digits += Node_n2->get_digits();
-					Node_n2 = Node_n2->get_previous();
-				}	
-					
-				int count_of_zeros = BIG_NUM::count_of_zeros(digits);
-	
-				if (digits >= 1000000000){
-					digits = digits%1000000000;
-					rest = 1;
-				}
-				result->add_new_digit(digits, count_of_zeros);
-				digits = rest;
-			}
-				
-			if (rest != 0){
-				result->add_new_digit(rest, 8);
-			}
+			BIG_NUM* result = new BIG_NUM();
+			sum(result, n1, n2);
+			
 			n1->set_DoublyLinkedList(result->get_DoublylinkedList());
 			delete result;
+			
 		}
 		
 		static void sum(BIG_NUM* result, BIG_NUM* n1, unsigned long long n2){ // n(big_num) = n1(big_num) + n2(unsigned long long);
@@ -349,5 +324,5 @@ class BIG_NUM{
 			BIG_NUM* result = new BIG_NUM();
 			BIG_NUM::pow(result, n1, n2);
 			n1->set_DoublyLinkedList(result->get_DoublylinkedList());	
-		}		
+		}	
 };
