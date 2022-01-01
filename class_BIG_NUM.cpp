@@ -3,11 +3,6 @@
 #include <cstddef>
 #include "class_DoublyLinkedList.cpp"
 
-#include <iostream>
-#include <string>
-#include <cstddef>
-#include "DoublyLinkedList_class.cpp"
-
 class BIG_NUM{
 	//BIG_NUM is represented by a DoublylinkedList and a set of methods to manipulate the numbers. You can create a big num with other int or use a string.
 	private:
