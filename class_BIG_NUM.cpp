@@ -415,14 +415,14 @@ class BIG_NUM{
 				result->set_negative(true);
 				n1->set_negative(true);
 				n2->set_negative(true);
-			}else if (n1->get_negative() && !n2->get_negative()){
+			}else if (n1->get_negative() == false && n2->get_negative()){
 				n2->set_negative(false);
 				BIG_NUM::sum(result, n1, n2);
-				result->set_negative(true);
+				result->set_negative(false);
 				n1->set_negative(false);
 				n2->set_negative(true);
 				
-			}else{ // n1->get_negative() && n2->get_negative()
+			}else{ // !n1->get_negative() && !n2->get_negative()
 				if (comp == 2){
 					result->set_negative(true);
 					swap(n1, n2);
