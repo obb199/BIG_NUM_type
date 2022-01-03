@@ -394,7 +394,6 @@ class BIG_NUM{
 		static void subtraction(BIG_NUM* result, BIG_NUM* n1, BIG_NUM* n2){ // n(big_num) = n1(big_num) + n2(big_num)
 			int comp = BIG_NUM::comparison(n1, n2);
 			
-			//Comparações iniciais
 			if(comp == 0 && n1->get_negative() == n2->get_negative()){ //Working
 				DoublyLinkedList* list = new DoublyLinkedList();
 				Node* node = new Node(0, 9);
@@ -419,9 +418,12 @@ class BIG_NUM{
 				n2->set_negative(false);
 				BIG_NUM::sum(result, n1, n2);
 				result->set_negative(false);
-				n1->set_negative(false);
 				n2->set_negative(true);
-				
+			}else if (n1->get_negative() && n2->get_negative() == false){
+				n1->set_negative(false);
+				BIG_NUM::sum(result, n1, n2);
+				result->set_negative(true);
+				n1->set_negative(true);
 			}else{ // !n1->get_negative() && !n2->get_negative()
 				if (comp == 2){
 					result->set_negative(true);
