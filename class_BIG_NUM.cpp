@@ -3,11 +3,13 @@
 #include <cstddef>
 #include "class_DoublyLinkedList.cpp"
 
+
 class BIG_NUM{
 	//BIG_NUM is represented by a DoublylinkedList and a set of methods to manipulate the numbers. You can create a big num with other int or use a string.
 	private:
 		DoublyLinkedList* big_num;
-		//bool negative = false; # FOR OTHER TIME (DIVISION, MOD, NUMBERS COMPARISONS TOO ...)
+		bool negative;
+		//FOR OTHER TIME (DIVISION, MOD, AND OTHERS TOO)
 	
 	public:
 		//Constructor with no parameters, create a big num with zero value
@@ -15,17 +17,24 @@ class BIG_NUM{
 			big_num = new DoublyLinkedList();
 			Node* node = new Node(0, 0);
 			big_num->set_head(node);
+			set_negative(false);
 		}
 		
 		//Construtor to create a big num using a string like "87129312738921"
 		BIG_NUM(string string_number){
 			big_num = new DoublyLinkedList();
 			
+			if (string_number[0] == '-'){
+				set_negative(true);
+			}else{
+				set_negative(false);
+			}
+			
 			char aux;
 			for(int i = 0; i < string_number.length()/2; i++){
 				aux = string_number[i];
 				string_number[i] = string_number[string_number.length() - i - 1];
-				string_number[string_number.length() - i - 1] = aux;	
+				string_number[string_number.length() - i - 1] = aux;
 			}
 			
 			int i = 0;
@@ -33,7 +42,12 @@ class BIG_NUM{
 			long long num = 0;
 			int zeros = 0;
 			
-			while (string_number[i] != '\0'){	
+			while (string_number[i] != '\0'){
+				if (string_number[i] == '-'){
+					i++;
+					continue;
+				}	
+				
 				if ((int)string_number[i] - 48 == 0){
 					zeros++;
 					mult_num *= 10;
@@ -61,7 +75,13 @@ class BIG_NUM{
 		BIG_NUM(long long number){
 			
 			big_num = new DoublyLinkedList();
-			big_num->add_new_digit(number, count_of_zeros(number));
+			big_num->add_new_digit(abs(number), count_of_zeros(number));
+			
+			if (number > 0){
+				set_negative(false);
+			}else{
+				set_negative(true);
+			}
 		}
 		
 		//Setters and Getters:
@@ -71,6 +91,14 @@ class BIG_NUM{
 		
 		void set_DoublyLinkedList(DoublyLinkedList* l){
 			big_num = l;
+		}
+		
+		bool get_negative(){
+			return negative;
+		}
+		
+		void set_negative(bool negative){
+			this->negative = negative;
 		}
 		
 		//Function to return the count of numbers exist in the number
@@ -149,6 +177,9 @@ class BIG_NUM{
 		
 		//Method to visualize the number
 		void show_number(){
+			if (negative){
+				cout << '-';
+			}
 			big_num->show_digits();
 		}
 		
@@ -169,7 +200,7 @@ class BIG_NUM{
 			big_num->add_of_product(digit, zeros);
 		}
 		
-		//if n1 > n2 return 1, if n2 > n1 return 2, if n1 == n2 return 0.
+		//if n1 > n2 return 1, if n2 > n1 return 2, if n1 == n2 return 0. (the comparation is only for module of number, because that, the signal is not verified)
 		static int comparation(BIG_NUM* n1, BIG_NUM*n2){
 			if(n1->length() > n2->length()){
 				return 1;
@@ -194,7 +225,8 @@ class BIG_NUM{
 		
 		//SUMS:
 		
-		static void sum(BIG_NUM* result, BIG_NUM* n1, BIG_NUM* n2){ // n(big_num) = n1(big_num) + n2(big_num);			
+		static void sum(BIG_NUM* result, BIG_NUM* n1, BIG_NUM* n2){ // n(big_num) = n1(big_num) + n2(big_num);
+			//NEEDS UPDATE!		
 			DoublyLinkedList * null_list = new DoublyLinkedList();
 			result->set_DoublyLinkedList(null_list);
 			Node* Node_n1 = n1->get_DoublylinkedList()->get_head();
@@ -273,6 +305,7 @@ class BIG_NUM{
 		
 		//PRODUCTS:
 		static void product(BIG_NUM* n1, BIG_NUM* n2){ // n1 (big_num) = n1(big_num) * n2(big_num)
+			//NEEDS UPDATE!
 			BIG_NUM* result = new BIG_NUM();		
 			DoublyLinkedList * null_list = new DoublyLinkedList();
 			result->set_DoublyLinkedList(null_list);
@@ -358,17 +391,44 @@ class BIG_NUM{
 		}
 		
 		//SUBTRACTIONS:
-		//(For now, only works when n1 > n2, in the next updates I will put negative numbers and others parts for this function and others!)
 		static void subtraction(BIG_NUM* result, BIG_NUM* n1, BIG_NUM* n2){ // n(big_num) = n1(big_num) + n2(big_num)
 			int comp = BIG_NUM::comparation(n1, n2);
 			
 			//Comparações iniciais
-			if(comp == 0){
+			if(comp == 0 && n1->get_negative() == n2->get_negative()){ //Working
 				DoublyLinkedList* list = new DoublyLinkedList();
 				Node* node = new Node(0, 9);
 				list->set_head(node);
 				result->set_DoublyLinkedList(list);
-			}else{				
+				result->set_negative(false);
+			}else if (comp == 0 && n1->get_negative() != n2->get_negative()){ //Working
+				if (n1->get_negative()){
+					result->set_negative(true);
+				}else{
+					result->set_negative(false);
+				}
+				BIG_NUM::product(result, n1, 2);
+			}else if ((n1->get_negative() == n2->get_negative() && n1->get_negative())){
+				n1->set_negative(false);
+				n2->set_negative(false);
+				BIG_NUM::sum(result, n1, n2);
+				result->set_negative(true);
+				n1->set_negative(true);
+				n2->set_negative(true);
+			}else if (n1->get_negative() && !n2->get_negative()){
+				n2->set_negative(false);
+				BIG_NUM::sum(result, n1, n2);
+				result->set_negative(true);
+				n1->set_negative(false);
+				n2->set_negative(true);
+				
+			}else{ // n1->get_negative() && n2->get_negative()
+				if (comp == 2){
+					result->set_negative(true);
+					swap(n1, n2);
+				}else{
+					result->set_negative(false);
+				}
 				DoublyLinkedList * null_list = new DoublyLinkedList();
 				result->set_DoublyLinkedList(null_list);
 				Node* Node_n1 = n1->get_DoublylinkedList()->get_head();
@@ -385,6 +445,7 @@ class BIG_NUM{
 				long long value_to_add = 0;
 				bool passed = false;
 				long long rest = 0;
+				
 				while(Node_n1 != NULL){
 					if (passed){
 						value_to_add = -1;
@@ -392,19 +453,13 @@ class BIG_NUM{
 					}else{
 						value_to_add = 0;
 					}
-					
 					if (Node_n2 != NULL){
-						if (Node_n1->get_digits() > Node_n2->get_digits()){
+						if (Node_n1->get_digits() >= Node_n2->get_digits()){
 							value_to_add += Node_n1->get_digits() - Node_n2->get_digits();
 							Node_n1 = Node_n1->get_previous();
 							Node_n2 = Node_n2->get_previous();
-						}else{
-							int mult = 1;
-							for (int i = 1; i < 9 - Node_n1->get_initial_zeros(); i++){
-								mult = mult*10;
-							}
-							
-							value_to_add += 10*mult + Node_n1->get_digits() - Node_n2->get_digits();
+						}else{	
+							value_to_add += 1000000000+Node_n1->get_digits() - Node_n2->get_digits();
 							passed = true;
 							Node_n1 = Node_n1->get_previous();
 							Node_n2 = Node_n2->get_previous();
@@ -414,8 +469,11 @@ class BIG_NUM{
 						Node_n1 = Node_n1->get_previous();
 					}
 					result->add_new_digit(value_to_add, count_of_zeros(value_to_add));
-				}	
-			}		
+				}
+				if (comp == 2){
+					swap(n1, n2);
+				}
+			}	
 		}
 		
 		static void subtraction(BIG_NUM* n1, BIG_NUM* n2){ // n1(big_num) = n1(big_num) + n2(big_num)
