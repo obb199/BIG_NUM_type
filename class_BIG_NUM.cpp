@@ -201,7 +201,7 @@ class BIG_NUM{
 		}
 		
 		//if n1 > n2 return 1, if n2 > n1 return 2, if n1 == n2 return 0. (the comparation is only for module of number, because that, the signal is not verified)
-		static int comparation(BIG_NUM* n1, BIG_NUM*n2){
+		static int comparison(BIG_NUM* n1, BIG_NUM*n2){
 			if(n1->length() > n2->length()){
 				return 1;
 			}else if (n2->length() > n1->length()){
@@ -392,7 +392,7 @@ class BIG_NUM{
 		
 		//SUBTRACTIONS:
 		static void subtraction(BIG_NUM* result, BIG_NUM* n1, BIG_NUM* n2){ // n(big_num) = n1(big_num) + n2(big_num)
-			int comp = BIG_NUM::comparation(n1, n2);
+			int comp = BIG_NUM::comparison(n1, n2);
 			
 			//Comparações iniciais
 			if(comp == 0 && n1->get_negative() == n2->get_negative()){ //Working
