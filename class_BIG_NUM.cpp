@@ -226,51 +226,64 @@ class BIG_NUM{
 		//SUMS:
 		
 		static void sum(BIG_NUM* result, BIG_NUM* n1, BIG_NUM* n2){ // n(big_num) = n1(big_num) + n2(big_num);
-			//NEEDS UPDATE!		
-			DoublyLinkedList * null_list = new DoublyLinkedList();
-			result->set_DoublyLinkedList(null_list);
-			Node* Node_n1 = n1->get_DoublylinkedList()->get_head();
-			Node* Node_n2 = n2->get_DoublylinkedList()->get_head();
-			
-			if (n1->get_DoublylinkedList()->get_tail() != NULL){
-				Node_n1 = n1->get_DoublylinkedList()->get_tail();
-			}
-			
-			if (n2->get_DoublylinkedList()->get_tail() != NULL){
-				Node_n2 = n2->get_DoublylinkedList()->get_tail();
-			}		
-			
-			int rest = 0;
-			long long digits = 0;
-			int amount_of_zeros = 0;
-			
-			while(Node_n1 != NULL || Node_n2 != NULL){
-				if (rest == 1){
-					digits = 1;
-					rest = 0;
+			if(!n1->get_negative() && n2->get_negative()){
+				n2->set_negative(false);
+				BIG_NUM::subtraction(result, n1, n2);
+				n2->set_negative(true);
+			}else if (n1->get_negative() && !n2->get_negative()){
+				n1->set_negative(false);
+				BIG_NUM::subtraction(result, n2, n1);
+				n1->set_negative(true);
+			}else{
+				if (n1->get_negative() && n2->get_negative()){
+					result->set_negative(true);
+				}else{
+					result->set_negative(false);
+				}
+				DoublyLinkedList * null_list = new DoublyLinkedList();
+				result->set_DoublyLinkedList(null_list);
+				Node* Node_n1 = n1->get_DoublylinkedList()->get_head();
+				Node* Node_n2 = n2->get_DoublylinkedList()->get_head();
+				
+				if (n1->get_DoublylinkedList()->get_tail() != NULL){
+					Node_n1 = n1->get_DoublylinkedList()->get_tail();
 				}
 				
-				if (Node_n1 != NULL){
-					digits += Node_n1->get_digits();
-					Node_n1 = Node_n1->get_previous();
-				}
-				if (Node_n2 != NULL){
-					digits += Node_n2->get_digits();
-					Node_n2 = Node_n2->get_previous();
-				}	
-
-				if (digits >= 1000000000){
-					digits = digits%1000000000;
-					rest = 1;
-				}
+				if (n2->get_DoublylinkedList()->get_tail() != NULL){
+					Node_n2 = n2->get_DoublylinkedList()->get_tail();
+				}		
 				
-				amount_of_zeros = BIG_NUM::count_of_zeros(digits);
-				result->add_new_digit(digits, amount_of_zeros);
-				digits = rest;
-			}
-			
-			if (rest != 0){
-				result->add_new_digit(rest, 8);
+				int rest = 0;
+				long long digits = 0;
+				int amount_of_zeros = 0;
+				
+				while(Node_n1 != NULL || Node_n2 != NULL){
+					if (rest == 1){
+						digits = 1;
+						rest = 0;
+					}
+					
+					if (Node_n1 != NULL){
+						digits += Node_n1->get_digits();
+						Node_n1 = Node_n1->get_previous();
+					}
+					if (Node_n2 != NULL){
+						digits += Node_n2->get_digits();
+						Node_n2 = Node_n2->get_previous();
+					}	
+	
+					if (digits >= 1000000000){
+						digits = digits%1000000000;
+						rest = 1;
+					}
+					
+					amount_of_zeros = BIG_NUM::count_of_zeros(digits);
+					result->add_new_digit(digits, amount_of_zeros);
+					digits = rest;
+				}
+				if (rest != 0){
+					result->add_new_digit(rest, 8);
+				}
 			}
 		}
 	
@@ -305,7 +318,6 @@ class BIG_NUM{
 		
 		//PRODUCTS:
 		static void product(BIG_NUM* n1, BIG_NUM* n2){ // n1 (big_num) = n1(big_num) * n2(big_num)
-			//NEEDS UPDATE!
 			BIG_NUM* result = new BIG_NUM();		
 			DoublyLinkedList * null_list = new DoublyLinkedList();
 			result->set_DoublyLinkedList(null_list);
@@ -343,32 +355,65 @@ class BIG_NUM{
 				zeros_n1++;
 				Node_n1 = Node_n1->get_previous();
 			}	
+			
 			n1->set_DoublyLinkedList(result->get_DoublylinkedList());
+			
+			if (n1->get_negative() != n2->get_negative()){
+				n1->set_negative(true);
+			}else if (n1->get_negative() && n2->get_negative()){
+				n1->set_negative(false);
+			}
+			
 			delete result;
 		}
 		
 		static void product(BIG_NUM* result, BIG_NUM* n1, BIG_NUM* n2){ //n(big_num) = n1(big_num) * n2 (big_num)
-			BIG_NUM* aux = new BIG_NUM();
-			aux->set_DoublyLinkedList(n1->get_DoublylinkedList());
-			BIG_NUM::product(n1, n2);
-			result->set_DoublyLinkedList(n1->get_DoublylinkedList());
-			n1->set_DoublyLinkedList(aux->get_DoublylinkedList());
-			delete aux;
+			BIG_NUM* new_n1 = new BIG_NUM();
+			BIG_NUM* new_n2 = new BIG_NUM();
+			new_n1->set_DoublyLinkedList(n1->get_DoublylinkedList());
+			new_n1->set_negative(n1->get_negative());
+			new_n2->set_DoublyLinkedList(n2->get_DoublylinkedList());
+			new_n2->set_negative(n2->get_negative());
+			
+			BIG_NUM::product(new_n1, new_n2);
+			
+			result->set_DoublyLinkedList(new_n1->get_DoublylinkedList());
+			result->set_negative(new_n1->get_negative());
+			
+			delete new_n1;
+			delete new_n2;
 		}
 		
 		static void product(BIG_NUM* result, BIG_NUM* n1, long long n2){ //n(big_num) = n1(big_num) * n2 (long long)	
-			BIG_NUM* big_n2 = new BIG_NUM(n2);
+			BIG_NUM* big_n2 = new BIG_NUM(abs(n2));
+			if (n2 < 0){
+				big_n2->set_negative(true);
+			}else{
+				big_n2->set_negative(false);
+			}
+			
 			BIG_NUM::product(result, n1, big_n2);
 			delete big_n2;	
 		}
 		
 		static void product(BIG_NUM* n1, long long n2){// n1(big_num) = n1(big_num) * n2(long long		
-			BIG_NUM* big_n2 = new BIG_NUM(n2);
+			BIG_NUM* big_n2 = new BIG_NUM(abs(n2));
+			if (n2 < 0){
+				big_n2->set_negative(true);
+			}else{
+				big_n2->set_negative(false);
+			}
+			
 			BIG_NUM::product(n1, big_n2);
 			delete big_n2;	
 		}
 		
 		static void pow(BIG_NUM* result, BIG_NUM* n1, long long n2){// n(big_num) = n1(big_num)^n2(long long)
+			if (n1->get_negative() && n2%2 == 1){
+				result->set_negative(true);
+			}else{
+				result->set_negative(false);
+			}
 			BIG_NUM* res = new BIG_NUM(1);
 				
 			for(int i = 0; i < n2; i++){
