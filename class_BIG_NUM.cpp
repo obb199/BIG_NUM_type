@@ -201,7 +201,7 @@ class BIG_NUM{
 		}
 		
 		//if n1 > n2 return 1, if n2 > n1 return 2, if n1 == n2 return 0. (the comparation is only for module of number, because that, the signal is not verified)
-		static int comparison(BIG_NUM* n1, BIG_NUM*n2){
+		static int comparison(BIG_NUM* n1, BIG_NUM* n2){
 			if(n1->length() > n2->length()){
 				return 1;
 			}else if (n2->length() > n1->length()){
@@ -539,6 +539,7 @@ class BIG_NUM{
 		static void subtraction(BIG_NUM* result, BIG_NUM* n1, long long n2){ //n(big_num) = n1(big_num) + n2(long long)
 			BIG_NUM* big_n2 = new BIG_NUM(n2);
 			BIG_NUM::subtraction(result, n1, big_n2);
+			delete big_n2;
 		}	
 		
 		static void subtraction(BIG_NUM* result, long long n1, long long n2){ //n(big_num) = n1(long long) + n2(long long)
@@ -546,5 +547,38 @@ class BIG_NUM{
 			BIG_NUM* big_n2 = new BIG_NUM(n2);
 			
 			BIG_NUM::subtraction(result, big_n1, big_n2);
-		}				
+		}
+		
+		static void division(BIG_NUM* result, BIG_NUM* n1, BIG_NUM* n2){
+			//needs a remake, because don't work for really big number!
+			
+			if (comparison(n1, n2) == 2){
+				BIG_NUM* result2 = new BIG_NUM(0);
+				result2->set_DoublyLinkedList(result2->get_DoublylinkedList());
+				delete result2;
+				
+			}
+			long long i = 0;
+			result->set_DoublyLinkedList(n1->get_DoublylinkedList());
+			bool n2_signal = n2->get_negative();
+			n2->set_negative(false);
+			
+			do{
+				BIG_NUM::subtraction(result, n2);
+				i++;
+			}while(comparison(result, n2) != 2);
+			
+			BIG_NUM* result1 = new BIG_NUM(i);
+			result->set_DoublyLinkedList(result1->get_DoublylinkedList());
+			delete result1;
+			
+			if(n1->get_negative() == n2->get_negative()){
+				result1->set_negative(false);
+			}else{
+				result1->set_negative(true);
+			}
+			
+			n2->set_negative(n2_signal);
+		}	
+	
 };
