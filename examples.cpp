@@ -24,8 +24,8 @@ int main(){
 	BIG_NUM* big5 = new BIG_NUM(4096);
 	BIG_NUM* res3 = new BIG_NUM();
 	
-	BIG_NUM::pow(res3, big5, 25); 
-	res3->show_number(); //4096 ^ 25
+	BIG_NUM::pow(res3, big5, 50); 
+	res3->show_number(); //4096 ^ 50
 	cout << "\n\n";
 	
 	BIG_NUM* n5 = new BIG_NUM("9523452343076575675");
