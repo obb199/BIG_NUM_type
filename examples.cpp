@@ -33,7 +33,7 @@ int main(){
 	BIG_NUM* res4 = new BIG_NUM();
 
  	BIG_NUM::division(res4, n5, n6);
- 	res4->show_number();
+ 	res4->show_number(); //(int)9523452343076575675/102326597787658575
  	cout << "\n\n";
 	
 	return 0;
