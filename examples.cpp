@@ -26,7 +26,15 @@ int main(){
 	
 	BIG_NUM::pow(res3, big5, 25); 
 	res3->show_number(); //4096 ^ 25
+	cout << "\n\n";
 	
+	BIG_NUM* n5 = new BIG_NUM("9523452343076575675");
+	BIG_NUM* n6 = new BIG_NUM("102326597787658575");
+	BIG_NUM* res4 = new BIG_NUM();
+
+ 	BIG_NUM::division(res4, n5, n6);
+ 	res4->show_number();
+ 	cout << "\n\n";
 	
 	return 0;
 }
