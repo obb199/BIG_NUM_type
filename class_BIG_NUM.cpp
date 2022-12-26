@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstddef>
+#include <cmath>
 #include "class_DoublyLinkedList.cpp"
 
 
