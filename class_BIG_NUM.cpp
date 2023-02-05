@@ -10,7 +10,6 @@ class BIG_NUM{
 	private:
 		DoublyLinkedList* big_num;
 		bool negative;
-		//FOR OTHER TIME (DIVISION, MOD, AND OTHERS TOO)
 	
 	public:
 		//Constructor with no parameters, create a big num with zero value
@@ -581,5 +580,17 @@ class BIG_NUM{
 			
 			n2->set_negative(n2_signal);
 		}	
+
+		static void mod(BIG_NUM* result, BIG_NUM* number, BIG_NUM* mod){
+			BIG_NUM* integer_division = new BIG_NUM();
+			BIG_NUM* product_numbers = new BIG_NUM();
 	
-};
+			BIG_NUM::division(integer_division, number, mod);
+			BIG_NUM::product(product_numbers, mod, integer_division);
+			
+			BIG_NUM:subtraction(result, number, product_numbers);
+			
+			delete integer_division;
+			
+		}
+	};
